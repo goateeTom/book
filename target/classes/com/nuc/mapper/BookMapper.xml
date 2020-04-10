@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.nuc.pojo.Book">
+    <id column="bid" jdbcType="CHAR" property="bid" />
+    <result column="bname" jdbcType="VARCHAR" property="bname" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="currPrice" jdbcType="DECIMAL" property="currprice" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+    <result column="press" jdbcType="VARCHAR" property="press" />
+    <result column="publishtime" jdbcType="CHAR" property="publishtime" />
+    <result column="edition" jdbcType="INTEGER" property="edition" />
+    <result column="pageNum" jdbcType="INTEGER" property="pagenum" />
+    <result column="wordNum" jdbcType="INTEGER" property="wordnum" />
+    <result column="printtime" jdbcType="CHAR" property="printtime" />
+    <result column="booksize" jdbcType="INTEGER" property="booksize" />
+    <result column="paper" jdbcType="VARCHAR" property="paper" />
+    <result column="cid" jdbcType="CHAR" property="cid" />
+    <result column="image_w" jdbcType="VARCHAR" property="imageW" />
+    <result column="image_b" jdbcType="VARCHAR" property="imageB" />
+    <result column="orderBy" jdbcType="INTEGER" property="orderby" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bid, bname, author, price, currPrice, discount, press, publishtime, edition, pageNum, 
+    wordNum, printtime, booksize, paper, cid, image_w, image_b, orderBy
+  </sql>
+  <select id="selectByExample" parameterType="com.nuc.pojo.BookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  <if test="startRow != null and pageSize != null and pageSize != 0">  
+  limit #{startRow,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}  
+</if>  
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where bid = #{bid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from book
+    where bid = #{bid,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nuc.pojo.BookExample">
+    delete from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nuc.pojo.Book">
+    insert into book (bid, bname, author, 
+      price, currPrice, discount, 
+      press, publishtime, edition, 
+      pageNum, wordNum, printtime, 
+      booksize, paper, cid, 
+      image_w, image_b, orderBy
+      )
+    values (#{bid,jdbcType=CHAR}, #{bname,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{currprice,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, 
+      #{press,jdbcType=VARCHAR}, #{publishtime,jdbcType=CHAR}, #{edition,jdbcType=INTEGER}, 
+      #{pagenum,jdbcType=INTEGER}, #{wordnum,jdbcType=INTEGER}, #{printtime,jdbcType=CHAR}, 
+      #{booksize,jdbcType=INTEGER}, #{paper,jdbcType=VARCHAR}, #{cid,jdbcType=CHAR}, 
+      #{imageW,jdbcType=VARCHAR}, #{imageB,jdbcType=VARCHAR}, #{orderby,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuc.pojo.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        bid,
+      </if>
+      <if test="bname != null">
+        bname,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="currprice != null">
+        currPrice,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="press != null">
+        press,
+      </if>
+      <if test="publishtime != null">
+        publishtime,
+      </if>
+      <if test="edition != null">
+        edition,
+      </if>
+      <if test="pagenum != null">
+        pageNum,
+      </if>
+      <if test="wordnum != null">
+        wordNum,
+      </if>
+      <if test="printtime != null">
+        printtime,
+      </if>
+      <if test="booksize != null">
+        booksize,
+      </if>
+      <if test="paper != null">
+        paper,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="imageW != null">
+        image_w,
+      </if>
+      <if test="imageB != null">
+        image_b,
+      </if>
+      <if test="orderby != null">
+        orderBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        #{bid,jdbcType=CHAR},
+      </if>
+      <if test="bname != null">
+        #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="currprice != null">
+        #{currprice,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="press != null">
+        #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        #{publishtime,jdbcType=CHAR},
+      </if>
+      <if test="edition != null">
+        #{edition,jdbcType=INTEGER},
+      </if>
+      <if test="pagenum != null">
+        #{pagenum,jdbcType=INTEGER},
+      </if>
+      <if test="wordnum != null">
+        #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="printtime != null">
+        #{printtime,jdbcType=CHAR},
+      </if>
+      <if test="booksize != null">
+        #{booksize,jdbcType=INTEGER},
+      </if>
+      <if test="paper != null">
+        #{paper,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=CHAR},
+      </if>
+      <if test="imageW != null">
+        #{imageW,jdbcType=VARCHAR},
+      </if>
+      <if test="imageB != null">
+        #{imageB,jdbcType=VARCHAR},
+      </if>
+      <if test="orderby != null">
+        #{orderby,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nuc.pojo.BookExample" resultType="java.lang.Long">
+    select count(*) from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book
+    <set>
+      <if test="record.bid != null">
+        bid = #{record.bid,jdbcType=CHAR},
+      </if>
+      <if test="record.bname != null">
+        bname = #{record.bname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.currprice != null">
+        currPrice = #{record.currprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discount != null">
+        discount = #{record.discount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.press != null">
+        press = #{record.press,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishtime != null">
+        publishtime = #{record.publishtime,jdbcType=CHAR},
+      </if>
+      <if test="record.edition != null">
+        edition = #{record.edition,jdbcType=INTEGER},
+      </if>
+      <if test="record.pagenum != null">
+        pageNum = #{record.pagenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.wordnum != null">
+        wordNum = #{record.wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.printtime != null">
+        printtime = #{record.printtime,jdbcType=CHAR},
+      </if>
+      <if test="record.booksize != null">
+        booksize = #{record.booksize,jdbcType=INTEGER},
+      </if>
+      <if test="record.paper != null">
+        paper = #{record.paper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=CHAR},
+      </if>
+      <if test="record.imageW != null">
+        image_w = #{record.imageW,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageB != null">
+        image_b = #{record.imageB,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderby != null">
+        orderBy = #{record.orderby,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book
+    set bid = #{record.bid,jdbcType=CHAR},
+      bname = #{record.bname,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      currPrice = #{record.currprice,jdbcType=DECIMAL},
+      discount = #{record.discount,jdbcType=DECIMAL},
+      press = #{record.press,jdbcType=VARCHAR},
+      publishtime = #{record.publishtime,jdbcType=CHAR},
+      edition = #{record.edition,jdbcType=INTEGER},
+      pageNum = #{record.pagenum,jdbcType=INTEGER},
+      wordNum = #{record.wordnum,jdbcType=INTEGER},
+      printtime = #{record.printtime,jdbcType=CHAR},
+      booksize = #{record.booksize,jdbcType=INTEGER},
+      paper = #{record.paper,jdbcType=VARCHAR},
+      cid = #{record.cid,jdbcType=CHAR},
+      image_w = #{record.imageW,jdbcType=VARCHAR},
+      image_b = #{record.imageB,jdbcType=VARCHAR},
+      orderBy = #{record.orderby,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuc.pojo.Book">
+    update book
+    <set>
+      <if test="bname != null">
+        bname = #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="currprice != null">
+        currPrice = #{currprice,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="press != null">
+        press = #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        publishtime = #{publishtime,jdbcType=CHAR},
+      </if>
+      <if test="edition != null">
+        edition = #{edition,jdbcType=INTEGER},
+      </if>
+      <if test="pagenum != null">
+        pageNum = #{pagenum,jdbcType=INTEGER},
+      </if>
+      <if test="wordnum != null">
+        wordNum = #{wordnum,jdbcType=INTEGER},
+      </if>
+      <if test="printtime != null">
+        printtime = #{printtime,jdbcType=CHAR},
+      </if>
+      <if test="booksize != null">
+        booksize = #{booksize,jdbcType=INTEGER},
+      </if>
+      <if test="paper != null">
+        paper = #{paper,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=CHAR},
+      </if>
+      <if test="imageW != null">
+        image_w = #{imageW,jdbcType=VARCHAR},
+      </if>
+      <if test="imageB != null">
+        image_b = #{imageB,jdbcType=VARCHAR},
+      </if>
+      <if test="orderby != null">
+        orderBy = #{orderby,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bid = #{bid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuc.pojo.Book">
+    update book
+    set bname = #{bname,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      currPrice = #{currprice,jdbcType=DECIMAL},
+      discount = #{discount,jdbcType=DECIMAL},
+      press = #{press,jdbcType=VARCHAR},
+      publishtime = #{publishtime,jdbcType=CHAR},
+      edition = #{edition,jdbcType=INTEGER},
+      pageNum = #{pagenum,jdbcType=INTEGER},
+      wordNum = #{wordnum,jdbcType=INTEGER},
+      printtime = #{printtime,jdbcType=CHAR},
+      booksize = #{booksize,jdbcType=INTEGER},
+      paper = #{paper,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=CHAR},
+      image_w = #{imageW,jdbcType=VARCHAR},
+      image_b = #{imageB,jdbcType=VARCHAR},
+      orderBy = #{orderby,jdbcType=INTEGER}
+    where bid = #{bid,jdbcType=CHAR}
+  </update>
+</mapper>
